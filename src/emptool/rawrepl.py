@@ -70,7 +70,6 @@ class RawRepl():
         if not data.endswith(b'raw REPL; CTRL-B to exit\r\n>'):
             print(data)
             raise RawReplError('could not enter raw repl')
-        print('---> now in rawrepl mode')
 
     def exit_raw_repl(self):
         print('==> Exit Raw REPL')
@@ -171,7 +170,7 @@ class RawRepl():
     def put_file(self, filename, data):
         """Create or update the specified file with the provided data.
         """
-
+        self.enter_raw_repl()
         data = data.encode('utf-8')
         # Open the file for writing on the board and write chunks of data.
         # self.enter_raw_repl()
@@ -187,3 +186,16 @@ class RawRepl():
             self.exec__("f.write({0})".format(chunk))
         self.exec__("f.close()")
         self.exit_raw_repl()
+
+    def mkdir(self, folder):
+        command = """
+        import os
+        os.mkdir('{0}')""".format(folder)
+
+        self.enter_raw_repl()
+        try:
+            out = self.exec__(textwrap.dedent(command))
+        except:
+            pass
+        self.exit_raw_repl()
+        # return out[2::]

@@ -20,6 +20,11 @@ def download_pkg(pkg):
 def unzip_pkg(pkg):
     t = tarfile.open(pkg)
     t.extractall()
+    for i in os.listdir(pkg.replace('.tar.gz', '')):
+        if not i.endswith('.py'):
+            os.remove('%s/%s' % (pkg.replace('.tar.gz', ''), i))
+
+    os.remove('%s/%s' % (pkg.replace('.tar.gz', ''), 'setup.py'))
 
 
 def remove_trash(pkg):
