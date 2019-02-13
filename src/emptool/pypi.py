@@ -30,10 +30,3 @@ def unzip_pkg(pkg):
 def remove_trash(pkg):
     os.system('rm %s' % pkg)
     os.system('rm -rf %s' % pkg.replace('.tar.gz', ''))
-
-
-if __name__ == '__main__':
-    # pkg_name = download_pkg('emp-ext')
-    # unzip_pkg(pkg_name)
-    pkg_name = 'emp-ext-1.13.tar.gz'
-    remove_trash(pkg_name)

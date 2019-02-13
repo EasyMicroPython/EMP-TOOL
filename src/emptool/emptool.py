@@ -1,6 +1,6 @@
-from rawrepl import RawRepl
+from emptool.rawrepl import RawRepl
 import os
-import pypi
+from emptool import pypi
 import json
 
 
@@ -15,7 +15,7 @@ class EmpTool:
     def pip_install(self, pkg, output='/lib'):
         # 由于8266之类的内存太少，导致无法使用upip进行正常的下载
         # 或者说那些根本不带Wifi模块的MicriPython设备而言
-        # 需要PC段辅助进行安装
+        # 需要PC辅助进行安装
         pkg_name = pypi.download_pkg(pkg)
         pypi.unzip_pkg(pkg_name)
         self.sync_folder(pkg_name.replace('.tar.gz', ''), output=output)
@@ -60,7 +60,8 @@ class EmpTool:
             self.repl.mkdir(output)
         with open(target, 'r') as f:
             print('==> sending file %s...' % target)
-            self.repl.put_file(output+'/'+target, f.read())
+            self.repl.put_file(output+'/'+target.split('/')
+                               [:1:-1][0], f.read())
 
     def get(self, target, output=None):
         if output is None and not isinstance(output, str):
@@ -69,7 +70,7 @@ class EmpTool:
             data = self.repl.get_file(target)
             f.write(data.decode('utf-8'))
 
-    def ls(self, dir):
+    def ls(self, dir='/'):
         data = json.loads(self.repl.walk(dir))
         for folder, _, filenames in data:
             for f in filenames:
