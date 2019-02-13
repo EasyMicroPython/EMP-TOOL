@@ -199,3 +199,37 @@ class RawRepl():
             pass
         self.exit_raw_repl()
         # return out[2::]
+
+    def walk(self, folder='/'):
+        command = """
+            import os
+            import sys
+            def is_folder(path):
+                try:
+                    os.listdir(path)
+                    return True
+                except:
+                    return False
+            s = []
+            def _listdir(path):
+                global s
+                n = [path, [], []]
+                for i in os.listdir(path):
+                    if is_folder(path + '/' + i):
+                        n[1].append(_listdir(path + '/' + i))
+                    else:
+                        n[2].append(i)
+                s.append(n)
+            _listdir('{0}')    
+            import json
+            sys.stdout.write(json.dumps(s))
+        """.format(folder)
+
+        self.enter_raw_repl()
+        try:
+            out = self.exec__(textwrap.dedent(command))
+        except RawReplError as ex:
+            raise ex
+        self.exit_raw_repl()
+        # print(out)
+        return out[2::]
