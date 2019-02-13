@@ -5,10 +5,12 @@ import json
 
 
 def download_pkg(pkg):
+    print('==> Collecting %s' % pkg)
     url = "https://pypi.org/pypi/%s/json" % pkg
     meta_data = requests.get(url).json()
     link = meta_data['urls'][0]['url']
     pkg_name = link.split('/')[-1]
+    print('  -> Downloding %s' % link)
     zipped_pkg = requests.get(link)
 
     with open(pkg_name, 'wb') as f:
@@ -18,6 +20,7 @@ def download_pkg(pkg):
 
 
 def unzip_pkg(pkg):
+    print('  -> Unpacking %s...' % pkg)
     t = tarfile.open(pkg)
     t.extractall()
     for i in os.listdir(pkg.replace('.tar.gz', '')):
@@ -28,5 +31,6 @@ def unzip_pkg(pkg):
 
 
 def remove_trash(pkg):
+    print('  -> Removing cache...')
     os.system('rm %s' % pkg)
     os.system('rm -rf %s' % pkg.replace('.tar.gz', ''))

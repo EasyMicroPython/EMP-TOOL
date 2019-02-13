@@ -10,7 +10,7 @@ class RawReplError(BaseException):
     pass
 
 
-class RawRepl():
+class RawRepl:
 
     def __init__(self, device, baudrate=115200, rawdelay=0, BUFFER_SIZE=1024):
         super().__init__()
