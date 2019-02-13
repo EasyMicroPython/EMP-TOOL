@@ -1,14 +1,9 @@
-import ctypes
-import inspect
 import json
 import sys
 import textwrap
-import threading
 import time
 
 import serial
-
-BUFFER_SIZE = 1024
 
 
 class RawReplError(BaseException):
@@ -17,9 +12,10 @@ class RawReplError(BaseException):
 
 class RawRepl():
 
-    def __init__(self, device, baudrate=115200, rawdelay=0):
+    def __init__(self, device, baudrate=115200, rawdelay=0, BUFFER_SIZE=1024):
         super().__init__()
         self._rawdelay = rawdelay
+        self.BUFFER_SIZE = BUFFER_SIZE
 
         if isinstance(device, str):
             self.repl = serial.Serial(device, baudrate)
@@ -50,7 +46,7 @@ class RawRepl():
         return data
 
     def enter_raw_repl(self):
-        print('==> Entering Raw REPL')
+        # print('==> Entering Raw REPL')
         # Brief delay before sending RAW MODE char if requests
         if self._rawdelay > 0:
             time.sleep(self._rawdelay)
@@ -72,7 +68,7 @@ class RawRepl():
             raise RawReplError('could not enter raw repl')
 
     def exit_raw_repl(self):
-        print('==> Exit Raw REPL')
+        # print('==> Exit Raw REPL')
         self.repl.write(b'\r\x02')  # ctrl-B: enter friendly REPL
 
     def follow(self, timeout, data_consumer=None):
@@ -152,7 +148,7 @@ class RawRepl():
                             break
                         len = sys.stdout.write(result)
             """.format(
-            filename, BUFFER_SIZE
+            filename, self.BUFFER_SIZE
         )
         self.enter_raw_repl()
         try:
@@ -177,8 +173,8 @@ class RawRepl():
         self.exec__("f = open('{0}', 'wb')".format(filename))
         size = len(data)
         # Loop through and write a buffer size chunk of data at a time.
-        for i in range(0, size, BUFFER_SIZE):
-            chunk_size = min(BUFFER_SIZE, size - i)
+        for i in range(0, size, self.BUFFER_SIZE):
+            chunk_size = min(self.BUFFER_SIZE, size - i)
             chunk = repr(data[i: i + chunk_size])
             # Make sure to send explicit byte strings (handles python 2 compatibility).
             if not chunk.startswith("b"):
