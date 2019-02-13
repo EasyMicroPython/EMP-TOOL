@@ -51,10 +51,9 @@ class EmpTool:
                 des = ('%s/%s' % (path, target)).replace('//', '/')
                 # print('/'.join(des.split('/')[:-1:]))
                 if not os.path.exists('/'.join(des.split('/')[:-1:])):
-                    print(' --> making dir %s' %
+                    print('  -> making dir %s' %
                           '/'.join(des.split('/')[:-1:]))
                     os.system('mkdir -p %s' % ('/'.join(des.split('/')[:-1:])))
-                print('  -> getting %s...' % target)
                 self.get(target, path=des)
 
     def put(self, target, path='/'):
@@ -73,7 +72,7 @@ class EmpTool:
             data = self.repl.get_file(target)
             f.write(data.decode('utf-8'))
 
-        print('==> Done.')
+        # print('==> Done.')
 
     def showcode(self, target):
         data = self.repl.get_file(target)
