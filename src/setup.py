@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='emptool',
-    version='0.1.6',
+    version='0.1.7',
     packages=['emptool'],
     include_package_data=True,
     license='MIT License',

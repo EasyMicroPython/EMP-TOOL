@@ -244,7 +244,7 @@ class RawRepl:
                         except:
                             clear_up(path+'/'+i)
                     os.rmdir(path)
-                clear_up({0})
+                clear_up('{0}')
                 """.format(path)
             self.enter_raw_repl()
             try:
