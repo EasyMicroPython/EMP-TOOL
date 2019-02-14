@@ -1,14 +1,12 @@
 # EMP-TOOL
 `emptool` 是一个由1Z实验室开发的MicroPython的命令行工具。
 
-## Features
+## 基本功能
 - PC到MicroPython设备端的指定文件传输
 - PC到MicroPython设备端的指定工程目录的同步传输
 - MicroPython设备到PC端的指定文件的传输
 - MicroPython设备到PC端的指定工程目录的下载
 - PC端pip辅助安装Pypi上的扩展
-- 打印目录
-- 打印指定脚本文件的代码
 
 
 ## 安装
@@ -69,6 +67,13 @@ sudo emptool pip_install emp-ext --device=/dev/ttyUSB0
 ```
 以上的指令将会从Pypi上寻找 名为`emp-ext`的包，并下载解压后，按照指定的路径同步传输到MicroPython的文件系统中。
 
+### 设置文件传输速率
+在以上关于文件传输的指令中，默认的缓冲区大小为1024，这个参数我们可以人为的进行设定，以便来根据不同的设备最大化传输效率,这对于那些较大的脚本而言，极为有效。
+```bash
+# 以从PC端获取MicroPython下的boot.py为例
+sudo emptool get boot.py ~/Test/boot.py --device=/dev/ttyUSB0 --buffer=2048
+```
+
 ### 显示指定目录下的文件列表
 ```bash
 # 不指明路径参数时，默认会列出MicroPython文件系统根目录下所有的内容
@@ -82,7 +87,7 @@ sudo emptool ls /lib --device=/dev/ttyUSB0
 ### 在终端中直接打印出某个文件中的内容
 ```bash
 # 例如查看boot.py
-sudo emptool showcode --target=/boot.py --device=/dev/ttyUSB0
+sudo emptool showcode --target=/boot.py --device=/dev/ttyUSB0 --buffer=2048
 # 或者简写为
 sudo emptool showcode boot.py --device=/dev/ttyUSB0
 ```
