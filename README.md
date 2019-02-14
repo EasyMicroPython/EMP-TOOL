@@ -91,3 +91,13 @@ sudo emptool showcode --target=/boot.py --device=/dev/ttyUSB0 --buffer=2048
 # 或者简写为
 sudo emptool showcode boot.py --device=/dev/ttyUSB0
 ```
+
+
+### 删除指定目录内的所有内容
+该功能只在方便的对MicroPython设备文件系统中指定目录内的所有内容进行递归删除。如果指定为根目录，将忽略`boot.py`
+```bash
+sudo emptool clear --path=/ --device=/dev/ttyUSB0
+# 或者可简写为
+sudo emptool clear / --device=/dev/ttyUSB0
+```
+以上的指令将删除除了boot.py的所有内容，慎用。
