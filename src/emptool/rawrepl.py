@@ -216,7 +216,7 @@ class RawRepl:
                     else:
                         n[2].append(i)
                 s.append(n)
-            _listdir('{0}')    
+            _listdir('{0}')
             import json
             sys.stdout.write(json.dumps(s))
         """.format(folder)
@@ -229,3 +229,28 @@ class RawRepl:
         self.exit_raw_repl()
         # print(out)
         return out[2::]
+
+    def clear(self, path='/'):
+        print('!!! Attention')
+        answer = input('Are you sure about clear %s?[y/n]' % path)
+        if answer in ['y', 'yes', 'YES', 'Yes']:
+            command = """
+                def clear_up(path):
+                    for i in os.listdir(path):
+                        if i == 'boot.py':
+                            continue
+                        try:
+                            os.remove(path+'/'+i)
+                        except:
+                            clear_up(path+'/'+i)
+                    os.rmdir(path)
+                clear_up({0})
+                """.format(path)
+            self.enter_raw_repl()
+            try:
+                self.exec__(textwrap.dedent(command))
+            except RawReplError as ex:
+                raise ex
+            self.exit_raw_repl()
+        else:
+            print('==> Cancled.')

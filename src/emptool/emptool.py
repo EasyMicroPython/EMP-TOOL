@@ -81,3 +81,6 @@ class EmpTool:
         for folder, _, filenames in data:
             for f in filenames:
                 print(('%s/%s' % (folder, f)).replace('//', '/'))
+
+    def clear(self, path='/'):
+        self.repl.clear(path=path)
