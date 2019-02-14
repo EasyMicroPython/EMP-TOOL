@@ -37,12 +37,12 @@ class EmpTool:
                             path+filename.replace(target, ''), f.read())
         print('==> Done.')
 
-    def download(self, dir, path=None):
+    def download(self, target, path=None):
         # 将MicroPython上指定路径的内容，下载到PC
         if path is None and not isinstance(path, str):
             raise EmpToolError('Please indicate an path path')
         print('==> Getting dir...')
-        data = json.loads(self.repl.walk(dir))
+        data = json.loads(self.repl.walk(target))
         print('==> Starting download...')
         for folder, _, files in data:
             for _file in files:
@@ -66,13 +66,11 @@ class EmpTool:
 
     def get(self, target, path=None):
         print('==> Getting %s' % target)
-        if path is None:
-            raise EmpToolError('Please indicate an output path')
+        if path is None or not os.path.exists(os.path.dirname(path)):
+            raise EmpToolError('No such file or directory: %s' % path)
         with open(path, 'w') as f:
             data = self.repl.get_file(target)
             f.write(data.decode('utf-8'))
-
-        # print('==> Done.')
 
     def showcode(self, target):
         data = self.repl.get_file(target)

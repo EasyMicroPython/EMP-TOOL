@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='emptool',
-    version='0.1.4',
+    version='0.1.5',
     packages=['emptool'],
     include_package_data=True,
     license='MIT License',
@@ -16,5 +16,9 @@ setup(
         'console_scripts': [
             'emptool = emptool.cli:main'
         ]
-    }
+    },
+    install_requires=[
+        'fire',
+        'pyserial'
+    ],
 )
