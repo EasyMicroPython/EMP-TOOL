@@ -26,7 +26,7 @@ class EmpTool(OSProfile):
 
         self.repl = RawRepl(device, BUFFER_SIZE=buffer)
 
-    def config(self, port, buffer_size):
+    def config(self, device, buffer):
         self.update_profile(dict(device=port, buffer=buffer_size))
 
     def pip_install(self, pkg, path='/lib'):
