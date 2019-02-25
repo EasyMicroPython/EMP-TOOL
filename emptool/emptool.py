@@ -20,9 +20,9 @@ class EmpTool(OSProfile):
             device = self.read_profile()['device']
             if device is None:
                 raise EmpToolError(
-                    """Init Error. Please run this command with arguments: [device]
-                    Or you can run this command first:
-                    emptool config --device=COM4 --buffer=1024""")
+                    """Init Error. The first time you use emptool, please specify the device parameter.""")
+        else:
+            self.update_profile(dict(device=device, buffer=buffer))
 
         self.repl = RawRepl(device, BUFFER_SIZE=buffer)
 
