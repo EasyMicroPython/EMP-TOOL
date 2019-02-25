@@ -19,6 +19,7 @@ setup(
     },
     install_requires=[
         'fire',
-        'pyserial'
+        'pyserial',
+        'osprofile'
     ],
 )

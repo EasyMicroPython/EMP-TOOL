@@ -2,15 +2,32 @@ from emptool.rawrepl import RawRepl
 import os
 from emptool import pypi
 import json
+from osprofile import OSProfile
 
 
 class EmpToolError(BaseException):
     pass
 
 
-class EmpTool:
-    def __init__(self, device='/dev/ttyUSB0', buffer=1024):
+class EmpTool(OSProfile):
+    def _profile(self):
+        pass
+
+    def __init__(self, device=None, buffer=1024):
+        super().__init__(appname='emptool', profile='emptool_cfg.json',
+                         options=dict(device=None, buffer=1024))
+        if device is None:
+            device = self.read_profile()['device']
+            if device is None:
+                raise EmpToolError(
+                    """Init Error. Please run this command with arguments: [device]
+                    Or you can run this command first:
+                    emptool config --device=COM4 --buffer=1024""")
+
         self.repl = RawRepl(device, BUFFER_SIZE=buffer)
+
+    def config(self, device, buffer):
+        self.update_profile(dict(device=device, buffer=buffer))
 
     def pip_install(self, pkg, path='/lib'):
         # 由于8266之类的内存太少，导致无法使用upip进行正常的下载

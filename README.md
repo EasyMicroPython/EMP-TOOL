@@ -1,12 +1,12 @@
 # EMP-TOOL
-`emptool` 是一个由1Z实验室开发的MicroPython的命令行工具。
+`emptool` 是一个由 1Z实验室 开发的 MicroPython 的命令行工具。
 
 ## 基本功能
-- PC到MicroPython设备端的指定文件传输
-- PC到MicroPython设备端的指定工程目录的同步传输
-- MicroPython设备到PC端的指定文件的传输
-- MicroPython设备到PC端的指定工程目录的下载
-- PC端pip辅助安装Pypi上的扩展
+- 更灵活的文件及文件夹的传输，支持 PC <==> MicroPython 间的双向传输
+- 获取 MicroPython 文件系统目录
+- 直接查看 MicroPython 文件系统中的某个文件内容
+- MicroPython 文件系统的递归删除
+- PC 端 pip 辅助安装 Pypi 上的扩展
 
 
 ## 安装
@@ -16,7 +16,7 @@ pip install emptool
 
 ## 快速开始
 
-### 向MicroPython设备传输文件
+### 向 MicroPython 设备传输文件
 ```bash
 sudo emptool put --target=example.py --device=/dev/ttyUSB0
 ```
@@ -29,7 +29,7 @@ sudo emptool put example.py /lib --device=/dev/ttyUSB0
 ```
 以上指令将文件`example.py`传输到MicroPython的`/lib`目录下
 
-### 从MicroPython设备下载指定文件到PC的指定目录下
+### 从 MicroPython 设备下载指定文件到PC的指定目录下
 ```bash
 sudo emptool get --target=boot.py --path=~/Test/boot.py --device=/dev/ttyUSB0
 # 或者可简写为：
@@ -37,7 +37,7 @@ sudo emptool get boot.py ~/Test/boot.py --device=/dev/ttyUSB0
 ```
 以上指令将MicroPython文件系统中根目录下的`boot.py`下载到PC上的`～/Test`目录下。
 
-### PC到MicroPython设备端的指定工程目录的同步传输
+### PC 到 MicroPython 设备端的指定工程目录的同步传输
 ```bash
 sudo emptool sync --target=./lib --path=/lib --device=/dev/ttyUSB0
 # 或者可简写为：
@@ -46,7 +46,7 @@ sudo emptool sync ./lib /lib --device=/dev/ttyUSB0
 
 以上指令可将PC当前目录下`lib`文件夹中的所有内容，全部同步传输到MicroPython的`/lib`目录下
 
-### MicroPython设备到PC端的指定工程目录的下载
+### MicroPython 设备到 PC 端的指定工程目录的下载
 ```bash
 sudo emptool download --target=/ --path=~/Test --device=/dev/ttyUSB0
 # 或者可简写为：
@@ -55,7 +55,7 @@ sudo emptool download / ~/Test --device=/dev/ttyUSB0
 以上指令可以将MicroPython根目录下的所有内容，同步下载到PC的`～/Test`目录下
 
 
-### PC端pip辅助安装Pypi上的扩展
+### PC 端 pip 辅助安装 Pypi 上的扩展
 由于8266之类的内存太少，导致无法使用upip进行正常的下载,或者说那些根本不带Wifi模块的MicriPython设备而言,可以在与PC串口连接的情况下让PC辅助进行安装。
 
 ```bash
