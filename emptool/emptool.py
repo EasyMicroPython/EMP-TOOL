@@ -27,7 +27,7 @@ class EmpTool(OSProfile):
                 ports = self.list_device()
                 select = int(
                     input('please select a device [0-%s]: ' % len(ports-1)))
-                device = ports[select].split('-').strip()
+                device = ports[select].split('-')[0].strip()
         else:
             self.update_profile(dict(device=device, buffer=buffer))
 
