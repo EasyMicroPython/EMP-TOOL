@@ -1,8 +1,11 @@
-from emptool.rawrepl import RawRepl
-import os
-from emptool import pypi
 import json
+import os
+import platform
+
+from emptool import pypi
+from emptool.rawrepl import RawRepl
 from osprofile import OSProfile
+import serial.tools.list_ports
 
 
 class EmpToolError(BaseException):
@@ -16,15 +19,32 @@ class EmpTool(OSProfile):
     def __init__(self, device=None, buffer=1024):
         super().__init__(appname='emptool', profile='emptool_cfg.json',
                          options=dict(device=None, buffer=1024))
+
         if device is None:
+
             device = self.read_profile()['device']
             if device is None:
-                raise EmpToolError(
-                    """Init Error. The first time you use emptool, please specify the device parameter.""")
+                ports = self.list_device()
+                select = int(
+                    input('please select a device [0-%s]: ' % len(ports-1)))
+                device = ports[select].split('-').strip()
         else:
             self.update_profile(dict(device=device, buffer=buffer))
 
         self.repl = RawRepl(device, BUFFER_SIZE=buffer)
+
+    def list_device(self):
+        ports = serial.tools.list_ports.comports()
+        if platform.system() == 'Windows':
+            ports = [str(i) for i in ports if 'COM' in str(i).upper()]
+        elif platform.system() == 'Linux':
+            ports = [str(i) for i in ports if 'ttyUSB' in str(i)]
+        elif platform.system() == 'Mac':
+            ports = [str(i) for i in ports if 'cu.SLAB_USBtoUART' in str(i)]
+
+        for i in ports:
+            print(i)
+        return ports
 
     def config(self, port, buffer_size=1024):
         self.update_profile(dict(device=port, buffer=buffer_size))
