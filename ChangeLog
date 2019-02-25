@@ -1,0 +1,27 @@
+CHANGES
+=======
+
+v0.9
+----
+
+* updated: setup.cfg
+* update gitignore
+* added: tests
+* added: osprofile
+* rm test
+* docs: update readme
+* fixed: SyntaxError in clear method
+* v0.1.6 implementd clear method
+* implemented clear method
+* added license
+* docs: update readme
+* docs: update readme
+* changed output
+* packup v0.1.3
+* added ls default dir /
+* implemented download method
+* implemented download method
+* implemented get method
+* basical emptool function implemented
+* sync
+* init

@@ -26,8 +26,8 @@ class EmpTool(OSProfile):
 
         self.repl = RawRepl(device, BUFFER_SIZE=buffer)
 
-    def config(self, device, buffer):
-        self.update_profile(dict(device=device, buffer=buffer))
+    def config(self, port, buffer_size):
+        self.update_profile(dict(device=port, buffer=buffer_size))
 
     def pip_install(self, pkg, path='/lib'):
         # 由于8266之类的内存太少，导致无法使用upip进行正常的下载
