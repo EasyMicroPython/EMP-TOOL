@@ -102,6 +102,7 @@ class EmpTool(OSProfile):
             print('==> sending file %s...' % target)
             self.repl.put_file(path+'/'+target.split('/')
                                [::-1][0], f.read())
+        print('Done')
 
     def get(self, target, path=None):
         print('==> Getting %s' % target)
