@@ -1,3 +1,4 @@
 fire
 pyserial
 osprofile
+requests

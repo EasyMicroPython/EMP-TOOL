@@ -20,16 +20,17 @@ class EmpTool(OSProfile):
         super().__init__(appname='emptool', profile='emptool_cfg.json',
                          options=dict(device=None, buffer=1024))
 
-        if device is None:
+        # if device is None:
 
-            device = self.read_profile()['device']
-            if device is None:
-                ports = self.list_device()
-                select = int(
-                    input('please select a device [0-%s]: ' % len(ports-1)))
-                device = ports[select].split('-')[0].strip()
-        else:
-            self.update_profile(dict(device=device, buffer=buffer))
+        #     device = self.read_profile()['device']
+        #     if device is None:
+        #         ports = self.list_device()
+        #         select = input(
+        #             'please select a device [0-%s]: ' % len(ports-1))
+        #         select = int(select)
+        #         device = ports[select].split('-')[0].strip()
+        # else:
+        #     self.update_profile(dict(device=device, buffer=buffer))
 
         self.repl = RawRepl(device, BUFFER_SIZE=buffer)
 
@@ -50,6 +51,7 @@ class EmpTool(OSProfile):
         self.update_profile(dict(device=port, buffer=buffer_size))
 
     def pip_install(self, pkg, path='/lib'):
+        # TODO： 兼容其余格式的package
         # 由于8266之类的内存太少，导致无法使用upip进行正常的下载
         # 或者说那些根本不带Wifi模块的MicriPython设备而言
         # 需要PC辅助进行安装
@@ -99,7 +101,7 @@ class EmpTool(OSProfile):
         with open(target, 'r') as f:
             print('==> sending file %s...' % target)
             self.repl.put_file(path+'/'+target.split('/')
-                               [:1:-1][0], f.read())
+                               [::-1][0], f.read())
 
     def get(self, target, path=None):
         print('==> Getting %s' % target)
