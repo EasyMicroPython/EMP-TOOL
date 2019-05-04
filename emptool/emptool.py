@@ -12,27 +12,25 @@ class EmpToolError(BaseException):
     pass
 
 
-class EmpTool(OSProfile):
-    def _profile(self):
-        pass
+class EmpTool:
 
-    def __init__(self, device=None, buffer=1024):
-        super().__init__(appname='emptool', profile='emptool_cfg.json',
-                         options=dict(device=None, buffer=1024))
-
-        # if device is None:
-
-        #     device = self.read_profile()['device']
-        #     if device is None:
-        #         ports = self.list_device()
-        #         select = input(
-        #             'please select a device [0-%s]: ' % len(ports-1))
-        #         select = int(select)
-        #         device = ports[select].split('-')[0].strip()
-        # else:
-        #     self.update_profile(dict(device=device, buffer=buffer))
-
-        self.repl = RawRepl(device, BUFFER_SIZE=buffer)
+    def __init__(self, device=None, buffer=None):
+        # osp 系统配置文件管理对象
+        self.osp = OSProfile(appname='emptool', profile='emptool_cfg.json',
+                             options=dict(device=None, buffer=1024))
+        if device and buffer:
+            self.repl = RawRepl(device, BUFFER_SIZE=buffer)
+        else:
+            profile = self.osp.read_profile()
+            device = profile['device']
+            buffer = profile['buffer']
+            if device and buffer:
+                self.repl = RawRepl(device, BUFFER_SIZE=buffer)
+            else:
+                raise EmpToolError(
+                    """Device and Buffer parameters are not specified!\n
+                    Please assign the above parameters by the following example command:\n
+                    emptool config --device=SerialPortName --buffer=1024""")
 
     def list_device(self):
         ports = serial.tools.list_ports.comports()
@@ -47,8 +45,8 @@ class EmpTool(OSProfile):
             print(i)
         return ports
 
-    def config(self, port, buffer_size=1024):
-        self.update_profile(dict(device=port, buffer=buffer_size))
+    def config(self, device, buffer=1024):
+        self.osp.update_profile(dict(device=device, buffer=buffer))
 
     def pip_install(self, pkg, path='/lib'):
         # TODO： 兼容其余格式的package
